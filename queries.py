@@ -42,8 +42,6 @@ def energy_contribution_query():
     """
 
 def demand_during_sleep_query():
-    sleep_start_hour = 22  # 10 PM
-    sleep_end_hour = 6      # 6 AM
     return """
             SELECT 
                 dim_time_table.hour,
