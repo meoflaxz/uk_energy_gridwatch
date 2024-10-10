@@ -3,10 +3,10 @@
 You may view the live web app here: https://ukenergygridwatch.streamlit.app/
 
 ## Data Stacks
-- Database: DuckDB
-- Visualization: Plotly, Streamlit
-- Hosting: Streamlit Community Cloud
-- Programming Language - Python
+- **Database**: DuckDB
+- **Visualization**: Plotly, Streamlit
+- **Hosting**: Streamlit Community Cloud
+- **Language**: Python, SQL
 
 ## Data Modelling
 - Star Schema
