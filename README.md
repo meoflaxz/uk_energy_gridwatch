@@ -27,7 +27,8 @@ You may view the live web app here: https://ukenergygridwatch.streamlit.app/
 - This dataset has around 1.4+ million rows which is quite huge for a simple project. Nevertheless, taking this project using DuckDB is a guide choice considering its performance on OLAP/analysis dashboard.
 - I intend to use Streamlit for the visualization part, due to the fact that I never tried this tool as extensive as this project and also trying to improve my Python skill.
 - Discussing my strategies, first improvement that I have done is aggregating the data to hour from unique timestamp, this would crammed all the 1.4+ million rows into around 100k rows.
-- The justification is quite easily, it does not makes much sense to view the data per timestamp in the dashboard because the data point is just too small and also the chart will be very noisy.
+- The justification is quite easy, it does not makes much sense to view the data per timestamp in the dashboard because the data point is just too small and also the chart will be very noisy.
 - Other addition is rendering unique primary key for each table since the structure has changed and this is important part so that we can join the data altogether during analysis part.
-
+- I also carefully craft the queries to align with Moving Average(MA) windowing, this easily allows the query to adjust for the user input in the web app to get users required Moving Average(MA).
+- Furthermore, I try to implement concurrent library to render all the charts concurrently. My idea is that I do not like the charts being rendered consequentially, which takes quite sometime to load - thus will make the web app loads faster than normal.
 
