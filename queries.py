@@ -4,13 +4,15 @@
 def demand_over_time_query():
     return """
         SELECT 
-            dim_time_table.time,
+            dim_time_table.year,
+            dim_time_table.month,
+            dim_time_table.day,
             AVG(fact_table.total_demand) AS total_demand
         FROM data_warehouse.fact_table AS fact_table
         JOIN data_warehouse.dim_time_table AS dim_time_table
             ON fact_table.time_id = dim_time_table.time_id
-        GROUP BY dim_time_table.time
-        ORDER BY dim_time_table.time
+        GROUP BY dim_time_table.year, dim_time_table.month, dim_time_table.day
+        ORDER BY dim_time_table.year, dim_time_table.month, dim_time_table.day
     """
 
 # calculate trend of enery over time
@@ -39,37 +41,16 @@ def energy_contribution_query():
         ORDER BY dim_time_table.year, dim_time_table.month, dim_time_table.day
     """
 
-def ict_contribution_query():
-    return """
-        SELECT 
-            dim_time_table.year,
-            dim_time_table.month,
-            dim_time_table.day,
-            SUM(dim_ict_table.coal) AS coal,
-            SUM(dim_ict_table.nuclear) AS nuclear,
-            SUM(dim_ict_table.ccgt) AS ccgt,
-            SUM(dim_ict_table.wind) AS wind,
-            SUM(dim_ict_table.solar) AS solar,
-            SUM(dim_ict_table.pumped) AS pumped,
-            SUM(dim_ict_table.hydro) AS hydro,
-            SUM(dim_ict_table.biomass) AS biomass,
-            SUM(dim_ict_table.oil) AS oil,
-            SUM(dim_ict_table.ocgt) AS ocgt
-        FROM data_warehouse.fact_table AS fact_table
-        JOIN data_warehouse.dim_time_table AS dim_time_table
-            ON fact_table.time_id = dim_time_table.time_id
-        JOIN data_warehouse.dim_ict_table AS dim_ict_table
-        """
-
 def demand_during_sleep_query():
-
     sleep_start_hour = 22  # 10 PM
     sleep_end_hour = 6      # 6 AM
     return """
             SELECT 
-                EXTRACT(HOUR FROM time) AS hour,
-                AVG(demand) AS avg_demand
-            FROM data_warehouse.aggregate_main_table
+                dim_time_table.hour,
+                AVG(fact_table.total_demand) AS avg_demand
+            FROM data_warehouse.fact_table
+            JOIN data_warehouse.dim_time_table
+                ON fact_table.time_id = dim_time_table.timestamp_id
             GROUP BY hour
             ORDER BY hour
             """
@@ -77,32 +58,35 @@ def demand_during_sleep_query():
 def ict_visualization_query():
     return """
         SELECT
-            dt.year,
-            AVG(ict.french_ict) AS avg_french_ict,
-            AVG(ict.dutch_ict) AS avg_dutch_ict,
-            AVG(ict.irish_ict) AS avg_irish_ict,
-            AVG(ict.east_west_ict) AS avg_east_west_ict,
-            AVG(ict.nemo_belgium_ict) AS avg_nemo_belgium_ict,
-            AVG(ict.other_generator) AS avg_other_generator,
-            AVG(ict.north_south) AS avg_north_south,
-            AVG(ict.scotland_england) AS avg_scotland_england,
-            AVG(ict.ifa2) AS avg_ifa2,
-            AVG(ict.intelec_ict) AS avg_intelec_ict,
-            AVG(ict.norway_ict) AS avg_norway_ict,
-            AVG(ict.viking_ict) AS avg_viking_ict
-        FROM data_warehouse.fact_table AS f
-        JOIN data_warehouse.dim_time_table AS dt
-            ON f.time_id = dt.timestamp_id
-        JOIN data_warehouse.dim_ict_table AS ict
-            ON f.time_id = ict.timestamp_id 
-        GROUP BY dt.year
-        ORDER BY dt.year;
+            dim_time_table.year,
+            dim_time_table.month,
+            dim_time_table.day,
+            AVG(dim_ict_table.french_ict) AS avg_french_ict,
+            AVG(dim_ict_table.dutch_ict) AS avg_dutch_ict,
+            AVG(dim_ict_table.irish_ict) AS avg_irish_ict,
+            AVG(dim_ict_table.nemo_belgium_ict) AS avg_nemo_belgium_ict,
+            AVG(dim_ict_table.other_generator) AS avg_other_generator,
+            AVG(dim_ict_table.north_south) AS avg_north_south,
+            AVG(dim_ict_table.scotland_england) AS avg_scotland_england,
+            AVG(dim_ict_table.ifa2) AS avg_ifa2,
+            AVG(dim_ict_table.intelec_ict) AS avg_intelec_ict,
+            AVG(dim_ict_table.norway_ict) AS avg_norway_ict,
+            AVG(dim_ict_table.viking_ict) AS avg_viking_ict
+        FROM data_warehouse.fact_table
+        JOIN data_warehouse.dim_time_table
+            ON fact_table.time_id = dim_time_table.timestamp_id
+        JOIN data_warehouse.dim_ict_table 
+            ON fact_table.time_id = dim_ict_table.timestamp_id 
+        GROUP BY dim_time_table.year, dim_time_table.month, dim_time_table.day
+        ORDER BY dim_time_table.year, dim_time_table.month, dim_time_table.day
         """
 
 def demand_v_production_query():
     return """
     SELECT 
-        dim_time_table.year, 
+        dim_time_table.year,
+        dim_time_table.month,
+        dim_time_table.day,
         SUM(fact_table.total_demand) AS total_demand,
         SUM(p.coal + p.nuclear + p.ccgt + p.wind + p.pumped + p.hydro + 
             p.biomass + p.oil + p.solar + p.ocgt + ict.french_ict + ict.dutch_ict + ict.irish_ict + ict.nemo_belgium_ict + ict.other_generator +
@@ -115,6 +99,6 @@ def demand_v_production_query():
         ON fact_table.time_id = dim_time_table.timestamp_id
     JOIN dim_ict_table AS ict
         ON fact_table.time_id = ict.timestamp_id
-    GROUP BY dim_time_table.year
-    ORDER BY dim_time_table.year;
+    GROUP BY dim_time_table.year, dim_time_table.month, dim_time_table.day
+    ORDER BY dim_time_table.year, dim_time_table.month, dim_time_table.day;
     """
