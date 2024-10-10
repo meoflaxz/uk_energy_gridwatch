@@ -1,11 +1,11 @@
 import pandas as pd
 import duckdb as duck
 
-raw_data = 'gridwatch.csv'
+raw_data = 'gridwatch.parquet'
 con = duck.connect('data_warehouse.duckdb')
 
 def data_cleaning(raw_data):
-    df = pd.read_csv(raw_data)
+    df = pd.read_parquet(raw_data)
     df.drop_duplicates(inplace=True)
     df.columns = df.columns.str.strip()
     return df
