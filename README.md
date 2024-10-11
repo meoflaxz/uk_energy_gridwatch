@@ -32,7 +32,4 @@ You may view the live web app here: https://ukenergygridwatch.streamlit.app/
 - I also carefully craft the queries to align with Moving Average(MA) windowing, this easily allows the query to adjust for the user input in the web app to get users required Moving Average(MA).
 - Furthermore, I try to implement concurrent library to render all the charts concurrently. My idea is that I do not like the charts being rendered consequentially, which takes quite sometime to load - thus implementing this thing will make the web app loads faster than normal.
 
-## Improvements
-- Dashboard aesthetics (obviously).
-- 
 
