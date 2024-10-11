@@ -15,9 +15,9 @@ You may view the live web app here: https://ukenergygridwatch.streamlit.app/
 
 
 ## Pipeline
-- **Data Lake**: Converting raw csv file into parquet for more efficient storage and processing
-- **Initial Cleaning**: Removing duplicates in parquet file before creating data model
-- **Database Aggregation**: Creating aggregation table per hour from parquet to ease dashboard processing and query analysing
+- **Data Lake**: Converting raw csv file into parquet for more efficient storage and processing.
+- **Initial Cleaning**: Removing duplicates in parquet file before creating data model.
+- **Database Aggregation**: Creating aggregation table per hour from parquet to ease dashboard processing and query analysing.
 - **Data Modelling**: Based on one big aggregation table, create multiple small table following star schema model. This part involves creating unique primary key, data insertion, and table management, final product is 'datawarehouse.duckdb'.
 - **Query Analysis**: Separating queries in one for analysis to improve code organization and readability. This queries will be called for visualization purposes using Streamlit.
 - **Web Development**: Analysis is visualized using Plotly library while implementing 'concurrent.futures.ThreadPoolExecutor()' for concurrent and faster chart loading in the web app.
@@ -30,5 +30,9 @@ You may view the live web app here: https://ukenergygridwatch.streamlit.app/
 - The justification is quite easy, it does not makes much sense to view the data per timestamp in the dashboard because the data point is just too small and also the chart will be very noisy.
 - Other addition is rendering unique primary key for each table since the structure has changed and this is important part so that we can join the data altogether during analysis part.
 - I also carefully craft the queries to align with Moving Average(MA) windowing, this easily allows the query to adjust for the user input in the web app to get users required Moving Average(MA).
-- Furthermore, I try to implement concurrent library to render all the charts concurrently. My idea is that I do not like the charts being rendered consequentially, which takes quite sometime to load - thus will make the web app loads faster than normal.
+- Furthermore, I try to implement concurrent library to render all the charts concurrently. My idea is that I do not like the charts being rendered consequentially, which takes quite sometime to load - thus implementing this thing will make the web app loads faster than normal.
+
+## Improvements
+- Dashboard aesthetics (obviously).
+- 
 

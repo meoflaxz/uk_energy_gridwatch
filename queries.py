@@ -59,17 +59,17 @@ def ict_visualization_query():
             dim_time_table.year,
             dim_time_table.month,
             dim_time_table.day,
-            AVG(dim_ict_table.french_ict) AS avg_french_ict,
-            AVG(dim_ict_table.dutch_ict) AS avg_dutch_ict,
-            AVG(dim_ict_table.irish_ict) AS avg_irish_ict,
-            AVG(dim_ict_table.nemo_belgium_ict) AS avg_nemo_belgium_ict,
-            AVG(dim_ict_table.other_generator) AS avg_other_generator,
-            AVG(dim_ict_table.north_south) AS avg_north_south,
-            AVG(dim_ict_table.scotland_england) AS avg_scotland_england,
-            AVG(dim_ict_table.ifa2) AS avg_ifa2,
-            AVG(dim_ict_table.intelec_ict) AS avg_intelec_ict,
-            AVG(dim_ict_table.norway_ict) AS avg_norway_ict,
-            AVG(dim_ict_table.viking_ict) AS avg_viking_ict
+            AVG(dim_ict_table.french_ict) AS french_ict,
+            AVG(dim_ict_table.dutch_ict) AS dutch_ict,
+            AVG(dim_ict_table.irish_ict) AS irish_ict,
+            AVG(dim_ict_table.nemo_belgium_ict) AS nemo_belgium_ict,
+            AVG(dim_ict_table.other_generator) AS other_generator,
+            AVG(dim_ict_table.north_south) AS north_south,
+            AVG(dim_ict_table.scotland_england) AS scotland_england,
+            AVG(dim_ict_table.ifa2) AS ifa2,
+            AVG(dim_ict_table.intelec_ict) AS intelec_ict,
+            AVG(dim_ict_table.norway_ict) AS norway_ict,
+            AVG(dim_ict_table.viking_ict) AS viking_ict
         FROM data_warehouse.fact_table
         JOIN data_warehouse.dim_time_table
             ON fact_table.time_id = dim_time_table.timestamp_id

@@ -292,4 +292,3 @@ if __name__ == "__main__":
     fact_gridwatch = get_fact_gridwatch()
     print(fact_gridwatch)
 
-
